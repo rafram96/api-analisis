@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pymongo
+pandas
+matplotlib
+seaborn
+boto3
+python-multipart
+python-dotenv
