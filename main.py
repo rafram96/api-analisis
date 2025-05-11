@@ -55,22 +55,17 @@ def get_alertas_stock():
     return JSONResponse(content={"labels": labels, "values": values})
 
 
-@app.get("/ventas/estacionalidad", summary="Obtener estacionalidad de ventas aleatoria")
+@app.get("/ventas/estacionalidad", summary="Obtener estacionalidad de ventas")
 def get_ventas_estacionalidad():
-    # Pedimos 5 productos random directamente a MongoDB
-    estacionalidad = list(db.estacionalidad.aggregate([{ "$sample": { "size": 5 } }]))
-
-    if not estacionalidad:
-        raise HTTPException(status_code=404, detail="No se encontraron productos aleatorios.")
-
+    estacionalidad = list(db.estacionalidad.find())
     labels = ["enero", "febrero", "marzo", "abril", "mayo", "junio",
               "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"]
 
     datasets = []
-    for dato in estacionalidad:
+    for dato in estacionalidad[:5]:  # Mostramos solo 5 productos
         datasets.append({
-            "label": dato.get("nombre_producto", "Producto Desconocido"),
-            "data": [dato.get("ventas_por_mes", {}).get(mes, 0) for mes in labels]
+            "label": dato.get("nombre_producto", f"Producto {dato['producto_id']}"),
+            "data": [dato["ventas_por_mes"].get(mes, 0) for mes in labels]
         })
 
     return JSONResponse(content={"labels": labels, "datasets": datasets})
