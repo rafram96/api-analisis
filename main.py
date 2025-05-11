@@ -23,9 +23,8 @@ app.add_middleware(
 )
 
 # Configuración MongoDB
-client = MongoClient("mongodb://localhost:27017/")
-db = client["smartstock_analytics"]
-
+MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017/")
+client = MongoClient(MONGO_URI)
 s3_client = boto3.client('s3')
 BUCKET_NAME = 'proy-cloud-bucket'  # Tu bucket
 CARPETA_DESTINO = 'Analisis/graficas/'  # Carpeta correcta que pediste
