@@ -9,6 +9,7 @@ import seaborn as sns
 import uvicorn
 from collections import defaultdict
 import boto3
+import os
 from datetime import datetime
 
 app = FastAPI(title="SmartStock Analytics API", version="1.0.0")
